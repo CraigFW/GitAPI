@@ -18,11 +18,12 @@ namespace GitApi.Controllers
 
         public ActionResult Details(string UserName)
         {
+            string auth = "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";
             GitModel gitModel = new GitModel();
-            gitModel.User = GetUser(UserName);
+            gitModel.User = GetUser(UserName, auth);
             if(gitModel.User != null)
             {
-                gitModel.Repos = GetRepos(gitModel.User.Repos_Url);
+                gitModel.Repos = GetRepos(gitModel.User.Repos_Url, auth);
             }
             else
             {
@@ -33,13 +34,13 @@ namespace GitApi.Controllers
             return View(gitModel);
         }
 
-        public GitUserModel GetUser(string user)
+        public GitUserModel GetUser(string user,string auth)
         {
             GitUserModel gitUser = null;
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://api.github.com/users/");
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "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");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", auth);
                 client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("GitApi", "1.0"));
                 var responseTask = client.GetAsync($"{user}");
                 responseTask.Wait();
@@ -59,12 +60,12 @@ namespace GitApi.Controllers
             }
             return gitUser;
         }
-        public IEnumerable<RepoModel> GetRepos(string urlname)
+        public IEnumerable<RepoModel> GetRepos(string urlname, string auth)
         {
             IEnumerable<RepoModel> repos = null;
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "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");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", auth);
                 client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("GitApi", "1.0"));
                 var responseTask = client.GetAsync(urlname);
                 responseTask.Wait();
