@@ -18,7 +18,7 @@ namespace GitApi.Controllers
 
         public ActionResult Details(string UserName)
         {
-            string auth = "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";
+            string auth = "TOKEN";
             GitModel gitModel = new GitModel();
             gitModel.User = GetUser(UserName, auth);
             if(gitModel.User != null)
