@@ -1,0 +1,63 @@
+﻿@model GitApi.Models.GitModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="container">
+    <div class="row" style="margin-top:1rem;margin-bottom:1rem;">
+        <div class="col-sm-3 col-sm-offset-2">
+            <div class="row">
+                <h1>
+                    @Html.DisplayFor(model => model.User.Name)
+                </h1>
+            </div>
+            <div class="row">
+                <div>
+                    <h3>@Html.DisplayFor(model => model.User.Location)</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <img src="@Html.DisplayFor(m=>m.User.Avatar_Url)" width="300" height="300" />
+        </div>
+    </div>
+
+    @if (Model.Repos.Count() == 0)
+    {
+        <div class="row text-center">
+            <h2 class="text-danger"><b>No Repos Found</b></h2>
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    Repo Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Star Count
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Repos.OrderByDescending(x => x.Stargazers_Count).Take(5))
+            {
+                <tr>
+                    <td>
+                        <a href="@item.Html_Url">@Html.DisplayFor(modelItem => item.Name)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Stargazers_Count)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</div>

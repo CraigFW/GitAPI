@@ -1,0 +1,30 @@
+﻿@model GitApi.Models.SearchModel
+
+@{
+    ViewBag.Title = "Home Page";
+    if (IsPost)
+    {
+        string userSearch = Request.Form["Users"];
+
+        Url.Action("Details", "Git", new { UserName = userSearch });
+    }
+}
+
+@using (Html.BeginForm("Search", "home", FormMethod.Post))
+{
+<div class="col-sm-8 col-sm-offset-2" style="justify-content: center; text-align: center; margin-top:20rem">
+    <div class="row" style="margin-bottom: 1rem; align-self: end;">
+        <b>Git Username:</b> @Html.TextBox("SearchString")
+    </div>
+    <div class="row">
+        <input class="btn btn-primary" type="submit" value="Search" />
+    </div>
+    @if (TempData["Message"] != null)
+    {
+        <div class="row" style="align-self: end;">
+            <h2 class="text-danger">@TempData["Message"]</h2>
+        </div>
+    }
+</div>
+}
+
